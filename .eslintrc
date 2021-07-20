@@ -1,0 +1,137 @@
+{
+  "extends": [
+    "airbnb",
+    // "eslint:recommended",
+    // "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "plugins": ["@typescript-eslint", "react-hooks", "prettier"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "project": "./tsconfig.json",
+    "extraFileExtensions": [".html"]
+  },
+  "settings": {
+    "react": {
+      "pragma": "React",
+      "fragment": "Fragment",
+      "version": "detect"
+    },
+    "import/resolver": {
+      "alias": {
+        "map": [
+          ["@", "./src"],
+          ["@@", "./src/presentations"],
+          ["Assets", ["./src/_assets"]],
+          ["Constants", "./src/_constants"],
+          ["Utils", "./src/_utils"],
+          ["Lib", "./src/_libs"],
+          ["Components", "./src/presentations/components"]
+        ],
+        "extensions": [".ts", ".tsx", ".json"]
+      }
+    }
+  },
+  "rules": {
+    // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
+    // e.g. "@typescript-eslint/explicit-function-return-type": 0,
+    // "import/prefer-default-export": 0,
+    // "react-hooks/exhaustive-deps": 0,
+    // "react-hooks/rules-of-hooks": 0,
+
+    "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/explicit-module-boundary-types": 0,
+    "import/extensions": 0,
+    "jsx-a11y/anchor-is-valid": 0,
+    "no-shadow": 0,
+    "no-multi-assign": 0,
+    "global-require": 0,
+    "import/prefer-default-export": 0,
+    "import/no-unresolved": 0,
+    "import/no-extraneous-dependencies": [1, { "devDependencies": true }],
+    "no-use-before-define": 0,
+    "react/prop-types": 0,
+    "react/no-array-index-key": 0,
+    "no-return-assign": 0,
+    "no-param-reassign": 0,
+    // "react/jsx-pascal-case": 0,
+    "no-unused-vars": 1,
+    "camelcase": 0,
+    "prettier/prettier": [
+      1,
+      {
+        "arrowParens": "always",
+        "semi": false,
+        "trailingComma": "es5",
+        "endOfLine": "lf",
+        "singleQuote": true,
+        "tabWidth": 2,
+        "printWidth": 120,
+        "useTabs": false
+      }
+    ],
+    "no-console": 1,
+    "@typescript-eslint/no-use-before-define": [1],
+    "object-curly-spacing": [1, "always"],
+    "no-unused-expressions": [2, { "allowTernary": true, "allowShortCircuit": true }],
+    "arrow-spacing": ["error", { "before": true, "after": true }],
+    "space-before-function-paren": [
+      2,
+      {
+        "anonymous": "always",
+        "named": "never",
+        "asyncArrow": "always"
+      }
+    ],
+    "react/jsx-filename-extension": [
+      2,
+      {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    ],
+    "key-spacing": [
+      2,
+      {
+        "singleLine": {
+          "beforeColon": false,
+          "afterColon": true
+        }
+        // multiLine: {
+        //   beforeColon: true,
+        //   afterColon: true,
+        //   align: 'colon',
+        // },
+      }
+    ],
+    "comma-spacing": [
+      2,
+      {
+        "before": false,
+        "after": true
+      }
+    ],
+    "space-before-blocks": 2,
+    "react/jsx-props-no-spreading": [
+      0
+      // {
+      //   html: 'ignore',
+      //   custom: 'ignore',
+      //   explicitSpread: 'ignore',
+      // },
+    ]
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true,
+    "es2020": true
+  },
+  "globals": {
+    "arguments": true,
+  },
+}
+
+// https://www.carlrippon.com/creating-react-and-typescript-apps-with-webpack/
+// https://www.robertcooper.me/using-eslint-and-prettier-in-a-typescript-project
