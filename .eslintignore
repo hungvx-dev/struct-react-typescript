@@ -1,17 +1,13 @@
 // .eslintignore
-dist/*
-node_modules/*
-public/*
 
 /.pnp
 .pnp.js
 
-# testing
 /coverage
-/node_modules
-# production
-/build
-/dist
+/build/*
+/dist/*
+/node_modules/*
+/public/*
 /.idea
 
 # misc

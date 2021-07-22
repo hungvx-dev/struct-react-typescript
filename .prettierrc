@@ -3,36 +3,54 @@
   "singleQuote": true,
   "trailingComma": "all",
   "tabWidth": 2,
-  "semi": false,
   "printWidth": 120,
-  "arrowParens": "always",
   "endOfLine": "lf",
+  "arrowParens": "always",
+  "bracketSpacing": true,
+  "embeddedLanguageFormatting": "auto",
+  "htmlWhitespaceSensitivity": "css",
+  "insertPragma": false,
+  "jsxBracketSameLine": false,
+  "jsxSingleQuote": true,
+  "proseWrap": "preserve",
+  "quoteProps": "as-needed",
+  "requirePragma": false,
+  "semi": false,
+  "vueIndentScriptAndStyle": false,
   "overrides": [
-      {
-          "files": ["*.ts"],
-          "options": {
-              "parser": "typescript"
-          }
-      },
-      {
-          "files": ["*.tsx"],
-          "options": {
-              "parser": "typescript",
-              "jsxBracketSameLine": false,
-              "jsxSingleQuote": false
-          }
-      },
-      {
-          "files": ["*.scss"],
-          "options": {
-              "parser": "scss"
-          }
-      },
-      {
-          "files": ["*.json"],
-          "options": {
-              "parser": "json"
-          }
+    {
+      "files": [
+        "*.ts"
+      ],
+      "options": {
+        "parser": "typescript"
       }
+    },
+    {
+      "files": [
+        "*.tsx"
+      ],
+      "options": {
+        "parser": "typescript",
+        "jsxBracketSameLine": false,
+        "jsxSingleQuote": false
+      }
+    },
+    {
+      "files": [
+        "*.scss"
+      ],
+      "options": {
+        "parser": "scss"
+      }
+    },
+    {
+      "files": [
+        "*.json"
+      ],
+      "options": {
+        "parser": "json"
+      }
+    }
   ]
 }

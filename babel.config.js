@@ -10,6 +10,7 @@ module.exports = (api) => {
       ],
       '@babel/preset-typescript'],
     plugins: [
+      !api.env('production') && 'react-refresh/babel',
       '@babel/plugin-syntax-dynamic-import',
       '@babel/plugin-proposal-object-rest-spread',
       '@babel/plugin-transform-runtime',
@@ -23,12 +24,12 @@ module.exports = (api) => {
       ],
       ['@babel/plugin-proposal-decorators', { 'legacy': true }],
       ['@babel/plugin-proposal-class-properties', { 'loose': true }],
-      [
-        '@ladifire-opensource/babel-plugin-transform-stylex',
-        {
-          'inject': true // will inject compiled css to stylesheet in head
-        }
-      ]
+      // [
+      //   '@ladifire-opensource/babel-plugin-transform-stylex',
+      //   {
+      //     'inject': true // will inject compiled css to stylesheet in head
+      //   }
+      // ]
     ],
   }
 }

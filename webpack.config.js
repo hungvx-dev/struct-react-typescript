@@ -22,7 +22,13 @@ const cacheGroups = {
     priority: -10,
     enforce: true,
     chunks: 'initial'
-  }
+  },
+  styles: {
+    name: "style",
+    test: /\.scss$/,
+    chunks: "all",
+    enforce: true,
+  },
 };
 
 const configWebpack = (env, { mode = 'development' }) => {
@@ -60,58 +66,42 @@ const configWebpack = (env, { mode = 'development' }) => {
       mangleWasmImports: true,
       mergeDuplicateChunks: true,
       nodeEnv: mode,
-
     },
     module: {
       rules: [
-        // {
-        //   test: /\.(jsx|js)$/,
-        //   exclude: /node_modules/,
-        //   use: [
-        //     {
-        //       loader: 'babel-loader',
-        //       options: {
-        //         plugins: [
-        //           isDev && require.resolve('react-refresh/babel'),
-        //         ].filter(Boolean),
-        //       },
-        //     },
-        //     {
-        //       loader: StylexPlugin.loader,
-        //       options: {
-        //         inject: false,
-        //       },
-        //     },
-        //   ]
-        // },
         {
-          test: /\.(tsx|ts)$/,
+          test: /\.([jt]sx|[jt]s)$/,
           enforce: 'pre',
-          exclude: /node_modules|browser_components/,
+          type: "javascript/auto",
+          exclude: /node_modules|bower_components/,
           use: [
-            // {
-            //   loader: 'ts-loader',
-            //   options: {
-            //     getCustomTransformers: () => ({
-            //       before: isDev ? [ReactRefreshTypeScript()] : [],
-            //     }),
-            //     // `ts-loader` does not work with HMR unless `transpileOnly` is used.
-            //     // If you need type checking, `ForkTsCheckerWebpackPlugin` is an alternative.
-            //     transpileOnly: isDev,
-            //   },
-            // },
             {
               loader: 'babel-loader',
               options: {
-                plugins: [
-                  isDev && require.resolve('react-refresh/babel'),
-                ].filter(Boolean),
+                sourceMaps: isDev,
+                babelrc: false,
+                configFile: true,
+                cacheDirectory: !0,
+                cacheCompression: isDev,
+                compact: isDev,
               },
             },
             {
               loader: StylexPlugin.loader,
               options: {
                 inject: false,
+              },
+            },
+            {
+              loader: "ts-loader",
+              options: {
+                getCustomTransformers: () => ({
+                  before: isDev
+                    ? [ReactRefreshTypeScript()]
+                    : [],
+                }),
+                transpileOnly: isDev,
+                // appendTsSuffixTo: [/\.vue$/],
               },
             },
           ],
@@ -153,10 +143,12 @@ const configWebpack = (env, { mode = 'development' }) => {
             },
           ],
         },
+
       ],
     },
     // stats: { warningsFilter: /export .* was not found in/ },
     // ignoreWarnings: [/Failed to parse source map/],
+    devtool: 'source-map',
     plugins: [
       new webpack.EnvironmentPlugin({
         NODE_ENV: mode, // use 'development' unless process.env.NODE_ENV is defined
@@ -166,6 +158,21 @@ const configWebpack = (env, { mode = 'development' }) => {
       }),
       new StylexPlugin(),
       new HtmlWebpackPlugin({
+        hash: false,
+        inject: !0,
+        minify: {
+          removeComments: !0,
+          collapseWhitespace: !0,
+          removeRedundantAttributes: !0,
+          useShortDoctype: !0,
+          removeEmptyAttributes: !0,
+          removeStyleLinkTypeAttributes: !0,
+          keepClosingSlash: !0,
+          minifyJS: !0,
+          minifyCSS: !0,
+          minifyURLs: !0,
+          removeAttributeQuotes: !1,
+        },
         filename: path.resolve(__dirname, 'dist/index.html'),
         template: path.resolve(__dirname, 'public/index.html'),
       }),
@@ -173,18 +180,18 @@ const configWebpack = (env, { mode = 'development' }) => {
         filename: isDev ? '[name].css' : '[name].[fullhash].css',
         chunkFilename: isDev ? '[id].css' : '[id].[fullhash].css',
       }),
-      new CleanWebpackPlugin(),
+      new CleanWebpackPlugin({ verbose: true }),
     ],
   }
 
   if (isDev) {
-    config.devtool = 'inline-source-map'
-    config.module.rules.push({
-      test: /\.js$/,
-      enforce: 'pre',
-      exclude: /node_modules/,
-      use: ['source-map-loader'],
-    })
+    config.devtool = 'inline-source-map',
+      config.module.rules.push({
+        test: /\.js$/,
+        enforce: 'pre',
+        exclude: /node_modules/,
+        use: ['source-map-loader'],
+      })
     config.watchOptions = {
       aggregateTimeout: 200,
       poll: 1000,
@@ -232,4 +239,3 @@ const configWebpack = (env, { mode = 'development' }) => {
 }
 
 module.exports = configWebpack
-// export default configWebpack;

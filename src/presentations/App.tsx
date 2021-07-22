@@ -1,33 +1,16 @@
-import React, { useState } from 'react'
-// import { hot } from 'react-hot-loader'
+import React, { useState, lazy, Suspense } from 'react'
 // import Auth from './modules/auth'
-
-// const test = () => 0
-
-interface Profile {
-  age: number
-  gender: string
-}
-
-class User {
-  profile: Profile
-
-  fullName: string
-}
+import './test.scss'
 
 function App() {
   const [state, setState] = useState(0)
-
-  const a = new User()
-  // console.log(test, a)
-
   return (
     <div>
-      <span>hung</span>
-      {/* <Auth /> */}
+      <label>asd
+        </label>
+      <span> ab  </span>
     </div>
   )
 }
 
-// export default hot(module)(App)
 export default App
