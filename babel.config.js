@@ -10,7 +10,6 @@ module.exports = (api) => {
       ],
       '@babel/preset-typescript'],
     plugins: [
-      !api.env('production') && 'react-refresh/babel',
       '@babel/plugin-syntax-dynamic-import',
       '@babel/plugin-proposal-object-rest-spread',
       '@babel/plugin-transform-runtime',

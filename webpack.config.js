@@ -3,26 +3,11 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const StylexPlugin = require('@ladifire-opensource/stylex-webpack-plugin')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const ReactRefreshTypeScript = require('react-refresh-typescript');
 
 const cacheGroups = {
-  vendorCore: {
-    name: 'vendor-core',
-    test: /node_modules\/@ladifire.*/g,
-    chunks: 'all',
-    priority: 0,
-    enforce: true
-  },
-  vendors: {
-    name: 'vendor',
-    test: /node_modules[\\/](?!@ladifire).*/g,
-    priority: -10,
-    enforce: true,
-    chunks: 'initial'
-  },
   styles: {
     name: "style",
     test: /\.scss$/,
@@ -61,6 +46,7 @@ const configWebpack = (env, { mode = 'development' }) => {
         maxAsyncRequests: 7,
         cacheGroups,
       },
+      runtimeChunk: "single",
       removeEmptyChunks: true,
       minimize: !isDev,
       mangleWasmImports: true,
@@ -72,26 +58,8 @@ const configWebpack = (env, { mode = 'development' }) => {
         {
           test: /\.([jt]sx|[jt]s)$/,
           enforce: 'pre',
-          type: "javascript/auto",
           exclude: /node_modules|bower_components/,
           use: [
-            {
-              loader: 'babel-loader',
-              options: {
-                sourceMaps: isDev,
-                babelrc: false,
-                configFile: true,
-                cacheDirectory: !0,
-                cacheCompression: isDev,
-                compact: isDev,
-              },
-            },
-            {
-              loader: StylexPlugin.loader,
-              options: {
-                inject: false,
-              },
-            },
             {
               loader: "ts-loader",
               options: {
@@ -101,7 +69,6 @@ const configWebpack = (env, { mode = 'development' }) => {
                     : [],
                 }),
                 transpileOnly: isDev,
-                // appendTsSuffixTo: [/\.vue$/],
               },
             },
           ],
@@ -148,7 +115,6 @@ const configWebpack = (env, { mode = 'development' }) => {
     },
     // stats: { warningsFilter: /export .* was not found in/ },
     // ignoreWarnings: [/Failed to parse source map/],
-    devtool: 'source-map',
     plugins: [
       new webpack.EnvironmentPlugin({
         NODE_ENV: mode, // use 'development' unless process.env.NODE_ENV is defined
@@ -156,7 +122,6 @@ const configWebpack = (env, { mode = 'development' }) => {
       new ForkTsCheckerWebpackPlugin({
         async: false,
       }),
-      new StylexPlugin(),
       new HtmlWebpackPlugin({
         hash: false,
         inject: !0,
@@ -185,13 +150,13 @@ const configWebpack = (env, { mode = 'development' }) => {
   }
 
   if (isDev) {
-    config.devtool = 'inline-source-map',
-      config.module.rules.push({
-        test: /\.js$/,
-        enforce: 'pre',
-        exclude: /node_modules/,
-        use: ['source-map-loader'],
-      })
+    config.devtool = 'inline-source-map'
+    config.module.rules.push({
+      test: /\.js$/,
+      enforce: 'pre',
+      exclude: /node_modules/,
+      use: ['source-map-loader'],
+    })
     config.watchOptions = {
       aggregateTimeout: 200,
       poll: 1000,
