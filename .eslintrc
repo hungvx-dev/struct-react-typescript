@@ -50,7 +50,6 @@
     "global-require": 0,
     "import/prefer-default-export": 0,
     "import/no-unresolved": 0,
-    "import/no-extraneous-dependencies": [1, { "devDependencies": true }],
     "no-use-before-define": 0,
     "react/prop-types": 0,
     "react/no-array-index-key": 0,
@@ -73,6 +72,10 @@
       }
     ],
     "no-console": 1,
+    "import/no-extraneous-dependencies": [
+      0,
+      { "devDependencies": false, "optionalDependencies": false, "peerDependencies": false }
+    ],
     "@typescript-eslint/no-use-before-define": [1],
     "object-curly-spacing": [1, "always"],
     "no-unused-expressions": [2, { "allowTernary": true, "allowShortCircuit": true }],
@@ -129,8 +132,8 @@
     "es2020": true
   },
   "globals": {
-    "arguments": true,
-  },
+    "arguments": true
+  }
 }
 
 // https://www.carlrippon.com/creating-react-and-typescript-apps-with-webpack/

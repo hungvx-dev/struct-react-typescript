@@ -6,7 +6,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const ReactRefreshTypeScript = require('react-refresh-typescript');
-
+// const autoprefixer = require('autoprefixer');
 const cacheGroups = {
   styles: {
     name: "style",
@@ -30,6 +30,7 @@ const configWebpack = (env, { mode = 'development' }) => {
     resolve: {
       extensions: ['.tsx', '.ts', '.js', '.jsx', '.json'],
       alias: {
+        react: path.resolve(__dirname, './node_modules/react'),
         Lib: path.resolve(__dirname, 'src/_libs'),
         Utils: path.resolve(__dirname, 'src/_utils'),
         Assets: path.resolve(__dirname, 'src/_assets'),
@@ -75,7 +76,7 @@ const configWebpack = (env, { mode = 'development' }) => {
         },
         {
           test: /\.(s[ac]ss|css)$/,
-          exclude: /node_modules/,
+          sideEffects: true,
           use: [
             isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
             {
@@ -84,7 +85,14 @@ const configWebpack = (env, { mode = 'development' }) => {
             },
             {
               loader: 'sass-loader', // Convert Scss/sass to css
-              options: { sourceMap: isDev },
+              options: {
+                sourceMap: isDev,
+                implementation: require('sass'),
+                webpackImporter: false,
+                sassOptions: {
+                  includePaths: ['./node_modules']
+                },
+              },
             },
           ],
         },
@@ -119,25 +127,12 @@ const configWebpack = (env, { mode = 'development' }) => {
       new webpack.EnvironmentPlugin({
         NODE_ENV: mode, // use 'development' unless process.env.NODE_ENV is defined
       }),
+      new webpack.ProgressPlugin(),
       new ForkTsCheckerWebpackPlugin({
         async: false,
       }),
       new HtmlWebpackPlugin({
         hash: false,
-        inject: !0,
-        minify: {
-          removeComments: !0,
-          collapseWhitespace: !0,
-          removeRedundantAttributes: !0,
-          useShortDoctype: !0,
-          removeEmptyAttributes: !0,
-          removeStyleLinkTypeAttributes: !0,
-          keepClosingSlash: !0,
-          minifyJS: !0,
-          minifyCSS: !0,
-          minifyURLs: !0,
-          removeAttributeQuotes: !1,
-        },
         filename: path.resolve(__dirname, 'dist/index.html'),
         template: path.resolve(__dirname, 'public/index.html'),
       }),
@@ -147,6 +142,9 @@ const configWebpack = (env, { mode = 'development' }) => {
       }),
       new CleanWebpackPlugin({ verbose: true }),
     ],
+    performance: {
+      maxEntrypointSize: 800000
+    }
   }
 
   if (isDev) {
